@@ -1,8 +1,11 @@
 package com.mycompany.virtual_camera.model.spatial_shape;
 
 import com.mycompany.virtual_camera.model.Edge3D;
+import com.mycompany.virtual_camera.model.Face3D;
 import com.mycompany.virtual_camera.model.Point3D;
+import java.awt.Color;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -33,6 +36,13 @@ public class Cuboid extends AbstractSpatialShape {
     final Edge3D e10;
     final Edge3D e11;
     final Edge3D e12;
+    
+    final Face3D f1_front;
+    final Face3D f2_back;
+    final Face3D f3_left;
+    final Face3D f4_right;
+    final Face3D f5_bottom;
+    final Face3D f6_top;
 
     public Cuboid(double x, double y, double z, double width, double height, double depth) throws IllegalArgumentException {
         if (Double.compare(width, 0) == 0) {
@@ -68,10 +78,19 @@ public class Cuboid extends AbstractSpatialShape {
         this.e11 = new Edge3D(p3, p7);
         this.e12 = new Edge3D(p4, p8);
         
+        this.f1_front  = new Face3D(new Point3D[]{p1,p2,p4,p3}, Color.blue);
+        this.f2_back   = new Face3D(new Point3D[]{p5,p6,p8,p7}, Color.cyan);
+        this.f3_left   = new Face3D(new Point3D[]{p1,p5,p7,p3}, Color.red);
+        this.f4_right  = new Face3D(new Point3D[]{p2,p6,p8,p4}, Color.green);
+        this.f5_bottom = new Face3D(new Point3D[]{p1,p2,p6,p5}, Color.darkGray);
+        this.f6_top    = new Face3D(new Point3D[]{p3,p4,p8,p7}, Color.lightGray);
+        
         Point3D[] point3DsArray = new Point3D[]{p1,p2,p3,p4,p5,p6,p7,p8};
         this.point3DsSet.addAll(Arrays.asList(point3DsArray));
         Edge3D[] edge3DsArray = new Edge3D[]{e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12};
         this.edge3DsSet.addAll(Arrays.asList(edge3DsArray));
+        List<Face3D> face3Ds = Arrays.asList(new Face3D[]{f1_front,f2_back,f3_left,f4_right,f5_bottom,f6_top});
+        this.face3DsList.addAll(face3Ds);
     }
 
     public Cuboid(Point3D first, Point3D second) throws IllegalArgumentException {
