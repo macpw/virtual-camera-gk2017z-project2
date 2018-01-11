@@ -37,7 +37,13 @@ public class Controller {
     private Controller() {
     }
     
-    public static void controller(ViewportModel viewportModel, View view) {
+    public static void controller(final ViewportModel viewportModel, final View view) throws NullPointerException {
+        if (viewportModel == null) {
+            throw new NullPointerException("viewportModel is null");
+        }
+        if (view == null) {
+            throw new NullPointerException("view is null");
+        }
         Controller.viewportModel = viewportModel;
         Controller.view = view;
         Controller.addListenerToFocalDistanceJPanel();
