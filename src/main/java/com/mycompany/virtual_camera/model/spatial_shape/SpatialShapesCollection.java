@@ -13,5 +13,6 @@ public class SpatialShapesCollection extends AbstractSpatialShape {
     public void addSpatialShape(AbstractSpatialShape spatialShape) {
         this.point3DsSet.addAll(spatialShape.getPoint3DsSet());
         this.edge3DsSet.addAll(spatialShape.getEdge3DsSet());
+        this.face3DsList.addAll(spatialShape.getFace3DsList());
     }
 }
