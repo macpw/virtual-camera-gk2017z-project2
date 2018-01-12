@@ -1,14 +1,11 @@
 package com.mycompany.virtual_camera;
 
 import com.mycompany.virtual_camera.controller.Controller;
-import com.mycompany.virtual_camera.model.Edge3D;
-import com.mycompany.virtual_camera.model.Point3D;
 import com.mycompany.virtual_camera.model.ViewportModel;
 import com.mycompany.virtual_camera.model.spatial_shape.Cuboid;
 import com.mycompany.virtual_camera.model.spatial_shape.SpatialShapesCollection;
 import com.mycompany.virtual_camera.view.View;
 import com.mycompany.virtual_camera.view.ViewportJPanel;
-import java.util.Set;
 import javax.swing.SwingUtilities;
 
 /**
@@ -31,6 +28,7 @@ public class RunMVC implements Runnable {
         View view = new View(viewportModel.getViewportWidth(), viewportModel.getViewportHeight());
         ViewportJPanel viewportJPanel = view.getViewportJPanel();
         viewportJPanel.setEdge3DsCollection(viewportModel.getEdge3DsSet());
+        viewportJPanel.setFace3DsCollection(viewportModel.getFace3DsList());
         viewportModel.addObserver(viewportJPanel);
         Controller.controller(viewportModel, view);
     }
