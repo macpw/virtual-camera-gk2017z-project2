@@ -1,5 +1,6 @@
 package com.mycompany.virtual_camera.model;
 
+import com.mycompany.virtual_camera.model.spatial_shape.SpatialShapesCollection;
 import java.awt.geom.Line2D;
 import java.util.Observable;
 import java.util.Set;
@@ -36,12 +37,12 @@ public class ViewportModel extends Observable {
     private double step = 10.0d;
     private double angleInDegrees = 1.0d;
     
-    public ViewportModel(int viewportWidth, int viewportHeight, Set<Point3D> point3DsSet, Set<Edge3D> edge3DsSet) {
+    public ViewportModel(int viewportWidth, int viewportHeight, SpatialShapesCollection spatialShapesCollection) {
         this.initGeometricTransformationMatrices();
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
-        this.point3DsSet = point3DsSet;
-        this.edge3DsSet = edge3DsSet;
+        this.point3DsSet = spatialShapesCollection.getPoint3DsSet();
+        this.edge3DsSet = spatialShapesCollection.getEdge3DsSet();
         this.updatePoint3DsSet(geometricTransformationMatrices[IDENTITY_MATRIX]);
         this.updateEdge3DsSet();
     }
