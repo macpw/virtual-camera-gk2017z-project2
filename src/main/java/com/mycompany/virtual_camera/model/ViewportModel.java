@@ -2,6 +2,9 @@ package com.mycompany.virtual_camera.model;
 
 import com.mycompany.virtual_camera.model.spatial_shape.SpatialShapesCollection;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Set;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -33,6 +36,7 @@ public class ViewportModel extends Observable {
     private final int viewportHeight;
     private final Set<Point3D> point3DsSet;
     private final Set<Edge3D> edge3DsSet;
+    private final List<Face3D> face3DsList;
     private double focalDistance = 200;// distance between observer and viewport
     private double step = 10.0d;
     private double angleInDegrees = 1.0d;
@@ -43,8 +47,8 @@ public class ViewportModel extends Observable {
         this.viewportHeight = viewportHeight;
         this.point3DsSet = spatialShapesCollection.getPoint3DsSet();
         this.edge3DsSet = spatialShapesCollection.getEdge3DsSet();
-        this.updatePoint3DsSet(geometricTransformationMatrices[IDENTITY_MATRIX]);
-        this.updateEdge3DsSet();
+        this.face3DsList = spatialShapesCollection.getFace3DsList();
+        this.update(geometricTransformationMatrices[IDENTITY_MATRIX]);
     }
     
     // Getters and Setters
@@ -88,6 +92,10 @@ public class ViewportModel extends Observable {
     
     public Set<Edge3D> getEdge3DsSet() {
         return edge3DsSet;
+    }
+    
+    public List<Face3D> getFace3DsList() {
+        return face3DsList;
     }
     
     // Methods
@@ -326,9 +334,37 @@ public class ViewportModel extends Observable {
         return mockPoint3D;
     }
     
+    private void updateFace3DsList() {
+        for (Face3D face3D : face3DsList) {
+            int inFrontOfViewportCounter = 0;
+            Path2D path2D = face3D.getPath2D();
+            path2D.reset();
+            Iterator<Point3D> iterator = face3D.getPoint3DsList().iterator();
+            Point3D first = iterator.next();
+            if (first.isInFrontOfViewport()) {
+                inFrontOfViewportCounter++;
+            }
+            path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
+            while (iterator.hasNext()) {
+                Point3D next = iterator.next();
+                if (next.isInFrontOfViewport()) {
+                    inFrontOfViewportCounter++;
+                }
+                path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
+            }
+            path2D.closePath();
+            if (inFrontOfViewportCounter == face3D.getPoint3DsList().size()) {
+                face3D.setInFrontOfViewport(true);
+            } else {
+                face3D.setInFrontOfViewport(false);
+            }
+        }
+    }
+    
     private void update(RealMatrix transformationMatrix) {
         this.updatePoint3DsSet(transformationMatrix);
         this.updateEdge3DsSet();
+        this.updateFace3DsList();
         this.setChanged();
         this.notifyObservers();
     }
