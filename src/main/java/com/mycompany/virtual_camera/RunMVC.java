@@ -27,9 +27,7 @@ public class RunMVC implements Runnable {
         SpatialShapesCollection spatialShapesCollection = new SpatialShapesCollection();
         spatialShapesCollection.addSpatialShape(cuboid_0);
         spatialShapesCollection.addSpatialShape(cuboid_1);
-        Set<Point3D> point3DsSet = spatialShapesCollection.getPoint3DsSet();
-        Set<Edge3D> edge3DsSet = spatialShapesCollection.getEdge3DsSet();
-        ViewportModel viewportModel = new ViewportModel(600, 400, point3DsSet, edge3DsSet);
+        ViewportModel viewportModel = new ViewportModel(600, 400, spatialShapesCollection);
         View view = new View(viewportModel.getViewportWidth(), viewportModel.getViewportHeight());
         ViewportJPanel viewportJPanel = view.getViewportJPanel();
         viewportJPanel.setEdge3DsCollection(viewportModel.getEdge3DsSet());
