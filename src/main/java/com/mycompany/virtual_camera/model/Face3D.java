@@ -18,7 +18,10 @@ public class Face3D {
     private boolean inFrontOfViewport;
     private Color color;
     
-    public Face3D(Point3D[] point3Ds, Color color) {
+    public Face3D(Point3D[] point3Ds, Color color) throws IllegalArgumentException {
+        if (point3Ds.length < 3) {
+            throw new IllegalArgumentException("Array must contain at least 3 points.");
+        }
         double xSum = 0;
         double ySum = 0;
         double zSum = 0;
@@ -35,7 +38,10 @@ public class Face3D {
         this.color = color;
     }
     
-    public Face3D(Collection<Point3D> point3Ds, Color color) {
+    public Face3D(Collection<Point3D> point3Ds, Color color) throws IllegalArgumentException {
+        if (point3Ds.size() < 3) {
+            throw new IllegalArgumentException("Collection must contain at least 3 points.");
+        }
         double xSum = 0;
         double ySum = 0;
         double zSum = 0;
