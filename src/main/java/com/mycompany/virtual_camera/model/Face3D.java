@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -105,5 +106,13 @@ public class Face3D {
         double y = ySum / point3DsList.size();
         double z = zSum / point3DsList.size();
         this.centerOfMass.setCoordinates(x, y, z);
+    }
+    
+    public static class ZCenterOfMassComparator implements Comparator<Face3D> {
+
+        @Override
+        public int compare(Face3D f1, Face3D f2) {
+            return Double.compare(f1.getCenterOfMass().getZ(), f2.getCenterOfMass().getZ());
+        }
     }
 }
