@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Queue;
 import javax.swing.JPanel;
 
 /**
@@ -19,6 +20,7 @@ public final class ViewportJPanel extends JPanel implements Observer {
     
     private Collection<Edge3D> edge3DsCollection;
     private Collection<Face3D> face3DsCollection;
+    private Queue<Face3D> face3DsQueue;
     
     public ViewportJPanel(int width, int height) {
         this.setPreferredSize(new Dimension(width, height));
@@ -33,6 +35,10 @@ public final class ViewportJPanel extends JPanel implements Observer {
     
     public void setFace3DsCollection(Collection<Face3D> face3DsCollection) {
         this.face3DsCollection = face3DsCollection;
+    }
+    
+    public void setFace3DsQueue(Queue<Face3D> face3DsQueue) {
+        this.face3DsQueue = face3DsQueue;
     }
     
     // Methods
