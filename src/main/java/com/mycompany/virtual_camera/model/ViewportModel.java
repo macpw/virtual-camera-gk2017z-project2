@@ -3,9 +3,13 @@ package com.mycompany.virtual_camera.model;
 import com.mycompany.virtual_camera.model.spatial_shape.SpatialShapesCollection;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -37,6 +41,8 @@ public class ViewportModel extends Observable {
     private final Set<Point3D> point3DsSet;
     private final Set<Edge3D> edge3DsSet;
     private final List<Face3D> face3DsList;
+    private final Comparator<Face3D> ZCenterOfMassComparator = new Face3D.ZCenterOfMassComparator();
+    private final Queue<Face3D> face3DsQueue = new PriorityQueue<>(Collections.reverseOrder(ZCenterOfMassComparator));
     private double focalDistance = 200;// distance between observer and viewport
     private double step = 10.0d;
     private double angleInDegrees = 1.0d;
@@ -96,6 +102,10 @@ public class ViewportModel extends Observable {
     
     public List<Face3D> getFace3DsList() {
         return face3DsList;
+    }
+    
+    public Queue<Face3D> getFace3DsQueue() {
+        return face3DsQueue;
     }
     
     // Methods
@@ -369,6 +379,7 @@ public class ViewportModel extends Observable {
             double z = zSum / face3D.getPoint3DsList().size();
             face3D.getCenterOfMass().setCoordinates(x, y, z);
         }
+        this.face3DsQueue.addAll(face3DsList);
     }
     
     private void update(RealMatrix transformationMatrix) {
