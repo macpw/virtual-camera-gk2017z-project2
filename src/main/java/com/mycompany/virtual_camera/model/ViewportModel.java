@@ -345,12 +345,18 @@ public class ViewportModel extends Observable {
                 inFrontOfViewportCounter++;
             }
             path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
+            double xSum = first.getX();
+            double ySum = first.getY();
+            double zSum = first.getZ();
             while (iterator.hasNext()) {
                 Point3D next = iterator.next();
                 if (next.isInFrontOfViewport()) {
                     inFrontOfViewportCounter++;
                 }
                 path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
+                xSum += next.getX();
+                ySum += next.getY();
+                zSum += next.getZ();
             }
             path2D.closePath();
             if (inFrontOfViewportCounter == face3D.getPoint3DsList().size()) {
@@ -358,6 +364,10 @@ public class ViewportModel extends Observable {
             } else {
                 face3D.setInFrontOfViewport(false);
             }
+            double x = xSum / face3D.getPoint3DsList().size();
+            double y = ySum / face3D.getPoint3DsList().size();
+            double z = zSum / face3D.getPoint3DsList().size();
+            face3D.getCenterOfMass().setCoordinates(x, y, z);
         }
     }
     
