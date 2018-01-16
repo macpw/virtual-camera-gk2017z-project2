@@ -108,11 +108,19 @@ public class Face3D {
         this.centerOfMass.setCoordinates(x, y, z);
     }
     
-    public static class ZCenterOfMassComparator implements Comparator<Face3D> {
-
+    public static class CenterOfMassComparator implements Comparator<Face3D> {
+        
         @Override
         public int compare(Face3D f1, Face3D f2) {
-            return Double.compare(f1.getCenterOfMass().getZ(), f2.getCenterOfMass().getZ());
+            double p1x = f1.getCenterOfMass().getX();
+            double p1y = f1.getCenterOfMass().getY();
+            double p1z = f1.getCenterOfMass().getZ();
+            double length1 = Math.sqrt(p1x*p1x+p1y*p1y+p1z*p1z);
+            double p2x = f2.getCenterOfMass().getX();
+            double p2y = f2.getCenterOfMass().getY();
+            double p2z = f2.getCenterOfMass().getZ();
+            double length2 = Math.sqrt(p2x*p2x+p2y*p2y+p2z*p2z);
+            return Double.compare(length1, length2);
         }
     }
 }

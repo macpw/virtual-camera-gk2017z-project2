@@ -33,7 +33,7 @@ public class ViewportModel extends Observable {
     private static final int ROTATE_DOWNWARD_MATRIX   = 10;
     private static final int ROTATE_TILT_LEFT_MATRIX  = 11;
     private static final int ROTATE_TILT_RIGHT_MATRIX = 12;
-    private static final int NUMBER_OF_MATRICES        = 13;
+    private static final int NUMBER_OF_MATRICES       = 13;
     
     private final RealMatrix[] geometricTransformationMatrices = new RealMatrix[NUMBER_OF_MATRICES];
     private final int viewportWidth;
@@ -41,8 +41,8 @@ public class ViewportModel extends Observable {
     private final Set<Point3D> point3DsSet;
     private final Set<Edge3D> edge3DsSet;
     private final List<Face3D> face3DsList;
-    private final Comparator<Face3D> ZCenterOfMassComparator = new Face3D.ZCenterOfMassComparator();
-    private final Queue<Face3D> face3DsQueue = new PriorityQueue<>(Collections.reverseOrder(ZCenterOfMassComparator));
+    private final Comparator<Face3D> centerOfMassComparator = new Face3D.CenterOfMassComparator();
+    private final Queue<Face3D> face3DsQueue = new PriorityQueue<>(Collections.reverseOrder(centerOfMassComparator));
     private double focalDistance = 200;// distance between observer and viewport
     private double step = 10.0d;
     private double angleInDegrees = 1.0d;
@@ -345,25 +345,26 @@ public class ViewportModel extends Observable {
     }
     
     private void updateFace3DsList() {
+        this.face3DsQueue.clear();// just in case if queue is not empty
         for (Face3D face3D : face3DsList) {
             int inFrontOfViewportCounter = 0;
             Path2D path2D = face3D.getPath2D();
             path2D.reset();
             Iterator<Point3D> iterator = face3D.getPoint3DsList().iterator();
             Point3D first = iterator.next();
+            path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
             if (first.isInFrontOfViewport()) {
                 inFrontOfViewportCounter++;
             }
-            path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
             double xSum = first.getX();
             double ySum = first.getY();
             double zSum = first.getZ();
             while (iterator.hasNext()) {
                 Point3D next = iterator.next();
+                path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
                 if (next.isInFrontOfViewport()) {
                     inFrontOfViewportCounter++;
                 }
-                path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
                 xSum += next.getX();
                 ySum += next.getY();
                 zSum += next.getZ();
