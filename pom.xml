@@ -48,6 +48,8 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>dependency/</classpathPrefix>
                             <mainClass>${project.groupId}.virtual_camera.App</mainClass>
                         </manifest>
                     </archive>
