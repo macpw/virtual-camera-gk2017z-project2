@@ -61,6 +61,9 @@ public final class ViewportJPanel extends JPanel implements Observer {
                 while (!face3DsQueue.isEmpty()) {
                     Face3D face3D = face3DsQueue.remove();
                     if (face3D.isInFrontOfViewport()) {
+                        g2D.setPaint(face3D.getColor());
+                        g2D.fill(face3D.getPath2D());
+                        g2D.setPaint(Color.black);
                         g2D.draw(face3D.getPath2D());
                     }
                     face3DsCopyList.add(face3D);
