@@ -347,38 +347,7 @@ public class ViewportModel extends Observable {
     private void updateFace3DsList() {
         this.face3DsQueue.clear();// just in case if queue is not empty
         for (Face3D face3D : face3DsList) {
-            int inFrontOfViewportCounter = 0;
-            Path2D path2D = face3D.getPath2D();
-            path2D.reset();
-            Iterator<Point3D> iterator = face3D.getPoint3DsList().iterator();
-            Point3D first = iterator.next();
-            path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
-            if (first.isInFrontOfViewport()) {
-                inFrontOfViewportCounter++;
-            }
-            double xSum = first.getX();
-            double ySum = first.getY();
-            double zSum = first.getZ();
-            while (iterator.hasNext()) {
-                Point3D next = iterator.next();
-                path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
-                if (next.isInFrontOfViewport()) {
-                    inFrontOfViewportCounter++;
-                }
-                xSum += next.getX();
-                ySum += next.getY();
-                zSum += next.getZ();
-            }
-            path2D.closePath();
-            if (inFrontOfViewportCounter == face3D.getPoint3DsList().size()) {
-                face3D.setInFrontOfViewport(true);
-            } else {
-                face3D.setInFrontOfViewport(false);
-            }
-            double x = xSum / face3D.getPoint3DsList().size();
-            double y = ySum / face3D.getPoint3DsList().size();
-            double z = zSum / face3D.getPoint3DsList().size();
-            face3D.getCentroid().setCoordinates(x, y, z);
+            face3D.update();
         }
         this.face3DsQueue.addAll(face3DsList);
     }
