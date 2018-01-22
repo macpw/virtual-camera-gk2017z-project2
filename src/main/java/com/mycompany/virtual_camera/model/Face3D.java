@@ -5,6 +5,7 @@ import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,6 +93,37 @@ public class Face3D {
     }
     
     // Methods
+    
+    void update() {
+        // update: path2D, inFrontOfViewport, centroid
+        Iterator<Point3D> iterator = this.point3DsList.iterator();
+        Point3D first = iterator.next();
+        this.path2D.reset();
+        this.path2D.moveTo(first.getPoint2D().getX(), first.getPoint2D().getY());
+        int inFrontOfViewportCounter = 0;
+        if (first.isInFrontOfViewport()) {
+            inFrontOfViewportCounter++;
+        }
+        double xSum = first.getX();
+        double ySum = first.getY();
+        double zSum = first.getZ();
+        while (iterator.hasNext()) {
+            Point3D next = iterator.next();
+            this.path2D.lineTo(next.getPoint2D().getX(), next.getPoint2D().getY());
+            if (next.isInFrontOfViewport()) {
+                inFrontOfViewportCounter++;
+            }
+            xSum += next.getX();
+            ySum += next.getY();
+            zSum += next.getZ();
+        }
+        this.path2D.closePath();
+        this.inFrontOfViewport = inFrontOfViewportCounter == this.point3DsList.size();
+        double x = xSum / this.point3DsList.size();
+        double y = ySum / this.point3DsList.size();
+        double z = zSum / this.point3DsList.size();
+        this.centroid.setCoordinates(x, y, z);
+    }
     
     void calculateCentroid() {
         double xSum = 0;
