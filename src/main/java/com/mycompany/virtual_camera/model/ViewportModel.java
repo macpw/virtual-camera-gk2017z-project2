@@ -2,10 +2,8 @@ package com.mycompany.virtual_camera.model;
 
 import com.mycompany.virtual_camera.model.spatial_shape.SpatialShapesCollection;
 import java.awt.geom.Line2D;
-import java.awt.geom.Path2D;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.PriorityQueue;
