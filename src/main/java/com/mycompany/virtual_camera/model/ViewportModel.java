@@ -41,8 +41,8 @@ public class ViewportModel extends Observable {
     private final Set<Point3D> point3DsSet;
     private final Set<Edge3D> edge3DsSet;
     private final List<Face3D> face3DsList;
-    private final Comparator<Face3D> centerOfMassComparator = new Face3D.CenterOfMassComparator();
-    private final Queue<Face3D> face3DsQueue = new PriorityQueue<>(Collections.reverseOrder(centerOfMassComparator));
+    private final Comparator<Face3D> distanceFromCentroidComparator = new Face3D.DistanceFromCentroidComparator();
+    private final Queue<Face3D> face3DsQueue = new PriorityQueue<>(Collections.reverseOrder(distanceFromCentroidComparator));
     private double focalDistance = 200;// distance between observer and viewport
     private double step = 10.0d;
     private double angleInDegrees = 1.0d;
@@ -378,7 +378,7 @@ public class ViewportModel extends Observable {
             double x = xSum / face3D.getPoint3DsList().size();
             double y = ySum / face3D.getPoint3DsList().size();
             double z = zSum / face3D.getPoint3DsList().size();
-            face3D.getCenterOfMass().setCoordinates(x, y, z);
+            face3D.getCentroid().setCoordinates(x, y, z);
         }
         this.face3DsQueue.addAll(face3DsList);
     }
