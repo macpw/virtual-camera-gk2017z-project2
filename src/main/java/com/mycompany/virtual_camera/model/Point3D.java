@@ -136,4 +136,15 @@ public class Point3D implements Comparable<Point3D> {
             return Double.compare(p1.getX(), p2.getX());
         }
     }
+    
+    public static class XZComparator implements Comparator<Point3D> {
+        
+        private final Point3D.XComparator xComparator = new Point3D.XComparator();
+        private final Point3D.ZComparator zComparator = new Point3D.ZComparator();
+        
+        @Override
+        public int compare(Point3D p1, Point3D p2) {
+            return xComparator.compare(p1, p2) != 0 ? xComparator.compare(p1, p2) : zComparator.compare(p1, p2);
+        }
+    }
 }
