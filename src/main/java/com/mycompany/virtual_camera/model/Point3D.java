@@ -12,6 +12,10 @@ import org.apache.commons.math3.linear.RealMatrix;
  */
 public class Point3D implements Comparable<Point3D> {
     
+    static final XComparator X_COMPARATOR = new Point3D.XComparator();
+    static final YComparator Y_COMPARATOR = new Point3D.YComparator();
+    static final ZComparator Z_COMPARATOR = new Point3D.ZComparator();
+    
     private final RealMatrix coordinates;// homogeneous coordinates
     private final Point2D point2D = new Point2D.Double();
     private boolean inFrontOfViewport;
@@ -113,15 +117,15 @@ public class Point3D implements Comparable<Point3D> {
         }
     }
     
-    public static class ZComparator implements Comparator<Point3D> {
+    static class XComparator implements Comparator<Point3D> {
         
         @Override
         public int compare(Point3D p1, Point3D p2) {
-            return Double.compare(p1.getZ(), p2.getZ());
+            return Double.compare(p1.getX(), p2.getX());
         }
     }
     
-    public static class YComparator implements Comparator<Point3D> {
+    static class YComparator implements Comparator<Point3D> {
         
         @Override
         public int compare(Point3D p1, Point3D p2) {
@@ -129,11 +133,11 @@ public class Point3D implements Comparable<Point3D> {
         }
     }
     
-    public static class XComparator implements Comparator<Point3D> {
+    static class ZComparator implements Comparator<Point3D> {
         
         @Override
         public int compare(Point3D p1, Point3D p2) {
-            return Double.compare(p1.getX(), p2.getX());
+            return Double.compare(p1.getZ(), p2.getZ());
         }
     }
     
